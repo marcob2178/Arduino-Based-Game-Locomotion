@@ -12,4 +12,4 @@ What is needed:
 5) pair of shoes to mount the sensors on 
 6) Arduino UNO
 
-This locomotion method would work for any PC games and console games and for vr games where in the vr game the movements are controlled by the joystick of a vr controller
+This locomotion method would work for any PC game and for any console game and for vr games where in the vr game the movements are controlled by the joystick of a vr controller
