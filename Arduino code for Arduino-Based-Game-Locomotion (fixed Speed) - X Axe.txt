@@ -1,0 +1,55 @@
+#include <VarSpeedServo.h>
+
+#define angle1 20
+#define angle2 90
+
+VarSpeedServo servo2;
+
+#define Sensor_SL A0
+#define Sensor_SR A1
+
+
+int sensorSL;
+int sensorSR;
+
+int speed;
+
+void setup() {
+  Serial.begin(9600);
+  servo2.attach(8);
+  servo2.write(90);
+}
+
+void loop() {
+
+  sensorSL = analogRead(Sensor_SL);
+  sensorSR = analogRead(Sensor_SR);
+
+  if (sensorSL > 10) {
+    speed = map( sensorSL , 0 , 1023 , 0 , 255);
+    if (sensorSL < 900) {
+      servo2.write(90 - angle1 , speed);
+    }
+    else {
+      servo2.write(90 - angle2 , speed);
+    }
+
+  }
+  else if (sensorSR > 10) {
+    speed = map( sensorSR , 0 , 1023 , 0 , 255);
+
+    if (sensorSR < 900) {
+      servo2.write(90 + angle1, speed);
+    }
+    else {
+      servo2.write(90 + angle2 , speed);
+    }
+  }
+  else {
+    servo2.write(90 , 255);
+  }
+
+  Serial.println("L: " + String(sensorSL) + " R: " + String(sensorSR) + " SPeed: " + String(speed));
+
+  delay(1);
+}
