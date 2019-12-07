@@ -1,4 +1,4 @@
-Software Requirements:
+ Software Requirements:
   ----------------------
   -Arduino IDE 1.0
   -#include <GY6050.h>
@@ -14,7 +14,7 @@ Software Requirements:
 
   Project Requirents:
   -------------------
-  • Game pad controller
+  â€¢ Game pad controller
 
 */
 
@@ -29,7 +29,7 @@ Software Requirements:
 #define Sensor_BL A0
 #define Sensor_BR A1
 
-VarSpeedServo servo1;
+VarSpeedServo servo;
 
 
 GY6050 gyro1(0x68);
@@ -50,7 +50,10 @@ int angle = 0;
 int prev_y1_axis = 0;
 int y1_hold = 0;
 unsigned long timer;
-int start=1;
+int start = 1;
+byte step = 0;
+String steps ,  laststep;
+int freq;
 
 void setup() {
   Serial.begin(9600);
@@ -58,8 +61,8 @@ void setup() {
   gyro1.initialisation();
   gyro2.initialisation();
   delay(100);
-  servo1.attach(8);
-  servo1.write(90);
+  servo.attach(8);
+  servo.write(90);
 }
 
 void loop() {
@@ -70,45 +73,72 @@ void loop() {
 
   //0 right  - 90 centr - 180 left
 
-  if (sensorBL > 10) {
+  if (sensorBL > 250) {
     speed = map( sensorBL , 0 , 1023 , 0 , 255);
     if (sensorBL < 900) { //less pressure 90+20=110
-      servo1.write(95 , speed);
+      servo.write(95 , speed);
+      angle = 95;
     }
     else if (sensorBL > 900) { //more pressre 90+90 = 180
-      servo1.write(105 , speed);
+      servo.write(105 , speed);
+      angle = 105;
     }
   }
-  else if (sensorBR > 10) {
+  else if (sensorBR > 250) {
     speed = map( sensorBR , 0 , 1023 , 0 , 255);
     if (sensorBR < 900) {
-      servo1.write(95 , speed);
+      servo.write(95 , speed);
+      angle = 95;
     }
     else if  (sensorBR > 900) {
-      servo1.write(105 , speed);
+      servo.write(105 , speed);
+      angle = 105;
     }
   }
-  else if ((start == 0 || millis() - timer > 1000) && y1_axis > -30 && y1_axis < 20 && y2_axis > -30 && y2_axis < 20 && sensorBL < 10 && sensorBR < 10) //flat dead end no servo movement - center position -  can we separate on different lines the pressure sensor and accell so that I can set the dead end value separately for the press sens and acc ?
+  else if ((start == 0 || millis() - timer > 800) && y1_axis > -90 && y1_axis < 20 && y2_axis > -90 && y2_axis < 20 && sensorBL < 10 && sensorBR < 20) //flat dead end no servo movement - center position -  can we separate on different lines the pressure sensor and accell so that I can set the dead end value separately for the press sens and acc ?
   {
-    Serial.println("Servo goes to zero");
+    servo.write( 85 , 15);
+    //Serial.println("Servo goes to zero");
     start = 1;
-    servo1.write( 85 , 15); //center speed = 0-255
+    step = 0;
+    angle = 0;
+    steps = "0";
   }
-  else if ((y1_axis > -95 & y1_axis < -40) || (y2_axis > -95 & y2_axis < -40))
+  else if ((y1_axis < 60 & y1_axis >40) && (step == 0 || step == 2))
   {
-    timer = millis();
-    servo1.write(70 , 20);
-    delay(100);
+    step = 1;
+    steps = "1";
   }
-  else if ((y1_axis < 95 & y1_axis > 40) || (y2_axis < 95 & y2_axis > 40))
+  else if ((y2_axis < 55 & y2_axis > 40) && (step == 0 || step == 1))
   {
-    timer = millis();
-    servo1.write(78 , 20);
-    delay(100);
+    step = 2;
+    steps = "2";
   }
 
+  if (!steps.equals(laststep)) {
 
+    if ((step == 1 || step == 2)  &&  millis() - timer <= 700) {
+      if (freq > 1) {
+        servo.write(70 , 20);
+        angle = 70;
+      }
+      else {
+        servo.write(78 , 20);
+        angle = 78;
+      }
+      freq++;
+    }
+    else if ((step == 1 || step == 2 &&  millis() - timer > 750)) {
+      servo.write(78 , 20);
+      angle = 78;
+      freq = 0;
+    }
 
-  Serial.println("y1: " + String(y1_axis) + " y2: " + String(y2_axis) + " L: " + String(sensorBL) + " R: " + String(sensorBR) + " SPeed: " + String(speed) + " Millis: " + String(millis()-timer));
-  delay(100);
+    timer = millis();
+  }
+  //Serial.println("Y1: " + String(y1_axis) + " Y2: " + String(y2_axis) + " S1: " + String(sensorBL) + " S2: " + String(sensorBR) + " Millis: " + String(millis() - timer) + " Step: " + String(steps) + " Last: " + String(laststep) + " Angle: " + String(angle));
+  Serial.println("Millis: " + String(millis() - timer) + " Angle: " + String(angle));
+
+  laststep = steps;
+
 }
