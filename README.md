@@ -13,3 +13,6 @@ What is needed:
 6) Arduino UNO
 
 This locomotion method works for any PC game and for any console game and for vr games where in the vr game the movements are controlled by the joystick of a vr controller
+
+
+https://www.youtube.com/watch?v=OYTlF2GhXpQ
