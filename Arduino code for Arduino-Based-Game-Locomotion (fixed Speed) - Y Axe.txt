@@ -1,4 +1,8 @@
- Software Requirements:
+/*
+  Author: GulJanjua
+  Date  : October 6, 2019
+
+  Software Requirements:
   ----------------------
   -Arduino IDE 1.0
   -#include <GY6050.h>
@@ -17,7 +21,6 @@
   • Game pad controller
 
 */
-
 
 #include <GY6050.h>
 #include <Wire.h>
