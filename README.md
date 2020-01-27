@@ -10,9 +10,10 @@ What is needed:
 3) two servomotors
 4) any PC or console gamepad controller that have potentiometers in Joystick; and/or any VR controller that have potentiometers in Joystick
 5) pair of shoes to mount the sensors on 
-6) Arduino UNO
+6) Arduino UNO or Arduino Due and Mega for locomotion in VR using custom vive controller based on matzman666/VR-Rifle-Firmware
 
-This locomotion method works for any PC game and for any console game and for vr games where in the vr game the movements are controlled by the joystick of a vr controller
+This locomotion method works for any PC game and for any console game and for vr games . For VR games this method can be used where in the vr game the movements are controlled by the joystick of a vr controller by hooking up the circuit to the joystick of a vr controller ;
+ or it can be used in VR games by makimg a custom vive controller with matzman666/VR-Rifle-Firmware and replacing its joystick with this custom locomotion system
 
 
 https://www.youtube.com/watch?v=OYTlF2GhXpQ
