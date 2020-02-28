@@ -7,7 +7,7 @@ What is needed:
 
 1) Four pressure sensors
 2) two accelerometers
-3) two servomotors (method for no servomotor use also implemented)
+3) two servomotors (method for no servomotor use also implemented, by using digipots)
 4) any PC or console gamepad controller that use a Joystick for locomotion (joystick with potentiometers or without potentiometers); and/or any VR controller that have Joystick (joystick that have potentiometers or without potentiometers)
 5) pair of shoes to mount the sensors on 
 6) Arduino UNO or Mega,  or "Arduino Due and Mega" for locomotion in VR using custom vive controller based on matzman666 modified arduino usb host library
